@@ -28,7 +28,6 @@ class AuthService:
         try:
             decoded_payload = jwt.decode(token, self.jwt_secret, algorithms=[self.jwt_algorithm])
             user_id = decoded_payload.get("user_id")
-            print(user_id)
             if not user_id:
                 raise PermissionDenied("Invalid token: user_id not found")
             return self._convert_user_dict_to_object(self.fetch_user(user_id))
@@ -44,7 +43,7 @@ class AuthService:
         cache_key = f"user_id_{user_id}"
         user = cache.get(cache_key)
         if not user:
-            response = requests.get(f"{self.AUTH_SERVICE_URL}{user_id}/", headers=self.headers)
+            response = requests.get(f"{self.AUTH_SERVICE_URL}users/{user_id}/", headers=self.headers)
             if response.status_code == 200:
                 user = response.json()
                 cache.set(cache_key, user, timeout=self.CACHE_TIMEOUT)
@@ -130,22 +129,22 @@ class AuthService:
         return User(user_data)
 
     def get_marketers(self):
-        response = requests.get(f"{self.AUTH_SERVICE_URL}auth/marketers/", headers=self.headers)
+        response = requests.get(f"{self.AUTH_SERVICE_URL}marketers/", headers=self.headers)
         return response.json()
     
     def get_marketer(self, national_id):
-        response = requests.get(f"{self.AUTH_SERVICE_URL}auth/marketers/{national_id}", headers=self.headers)
+        response = requests.get(f"{self.AUTH_SERVICE_URL}marketers/{national_id}", headers=self.headers)
         return response.json(), response.status_code 
     
     def update_marketer(self, payload, national_id):
-        response = requests.patch(f"{self.AUTH_SERVICE_URL}auth/marketers/{national_id}/", headers=self.headers,data=payload)
+        response = requests.patch(f"{self.AUTH_SERVICE_URL}marketers/{national_id}/", headers=self.headers,data=payload)
         return response.json(), response.status_code
     
     def create_marketer(self, payload):
-        response = requests.post(f"{self.AUTH_SERVICE_URL}auth/marketers/", headers=self.headers, data=payload)
+        response = requests.post(f"{self.AUTH_SERVICE_URL}marketers/", headers=self.headers, data=payload)
         return response.json(), response.status_code
 
     def check_marketer_exist(self, national_id):
-        response = requests.get(f"{self.AUTH_SERVICE_URL}auth/check-marketer/{national_id}/", headers=self.headers)
+        response = requests.get(f"{self.AUTH_SERVICE_URL}check-marketer/{national_id}/", headers=self.headers)
         return response
 
