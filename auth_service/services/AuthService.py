@@ -120,7 +120,8 @@ class AuthService:
 
         class User:
             def __init__(self, user_data):
-                self.id = user_data.get("national_id")
+                self.id = user_data.get("id")
+                self.national_id = user_data.get("national_id")
                 self.username = user_data.get("username", None)
                 self.email = user_data.get("email", None)
                 self.role = user_data.get("role", None)
