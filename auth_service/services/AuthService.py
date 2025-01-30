@@ -128,3 +128,24 @@ class AuthService:
                 self.is_authenticated = True
 
         return User(user_data)
+
+    def get_marketers(self):
+        response = requests.get(f"{self.AUTH_SERVICE_URL}auth/marketers/", headers=self.headers)
+        return response.json()
+    
+    def get_marketer(self, national_id):
+        response = requests.get(f"{self.AUTH_SERVICE_URL}auth/marketers/{national_id}", headers=self.headers)
+        return response.json(), response.status_code 
+    
+    def update_marketer(self, payload, national_id):
+        response = requests.patch(f"{self.AUTH_SERVICE_URL}auth/marketers/{national_id}/", headers=self.headers,data=payload)
+        return response.json(), response.status_code
+    
+    def create_marketer(self, payload):
+        response = requests.post(f"{self.AUTH_SERVICE_URL}auth/marketers/", headers=self.headers, data=payload)
+        return response.json(), response.status_code
+
+    def check_marketer_exist(self, national_id):
+        response = requests.get(f"{self.AUTH_SERVICE_URL}auth/check-marketer/{national_id}/", headers=self.headers)
+        return response
+
