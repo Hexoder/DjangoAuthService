@@ -4,7 +4,6 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 
-
 class AuthService:
     """
     A service class to interact with the external authentication service.
@@ -14,7 +13,7 @@ class AuthService:
     AUTH_SERVICE_URL = settings.AUTH_SERVICE_URL
     AUTH_SERVICE_BULK_URL = "http://auth-service-domain/api/users/bulk/"
     CACHE_TIMEOUT = settings.USER_DATA_TIMEOUT
-
+    SERVICE_NAME = settings.SERVICE_NAME
     def __init__(self, token):
         """
         Initialize the AuthService with the user's JWT token.
@@ -124,7 +123,9 @@ class AuthService:
                 self.national_id = user_data.get("national_id")
                 self.username = user_data.get("username", None)
                 self.email = user_data.get("email", None)
-                self.role = user_data.get("role", None)
+                self.roles = user_data.get("roles", [])
+                self.departments = user_data.get("departments", [])
+                self.service = user_data.get("service", None)
                 self.is_authenticated = True
 
         return User(user_data)
