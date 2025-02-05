@@ -125,7 +125,8 @@ class AuthService:
                 self.email = user_data.get("email", None)
                 self.roles = user_data.get("roles", [])
                 self.departments = user_data.get("departments", [])
-                self.service = user_data.get("service", None)
+                self.service = user_data.get("service", {})
+                self.sub_services = user_data.get("sub_services", [])
                 self.is_authenticated = True
 
         return User(user_data)
