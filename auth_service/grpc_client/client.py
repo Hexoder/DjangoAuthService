@@ -59,7 +59,6 @@ class AuthClient:
                 cls._instance = super(AuthClient, cls).__new__(cls)
 
                 cls._instance.channel = get_secure_channel(server_address)
-
                 # cls._instance.channel = grpc.insecure_channel(cls._conn_address)
 
                 cls._instance.stub = auth_pb2_grpc.AuthServiceStub(cls._instance.channel)

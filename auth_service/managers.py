@@ -4,7 +4,6 @@ from .grpc_client.client import AuthClient
 
 client = AuthClient()
 
-
 class BaseAuthUserManager(BaseUserManager):
 
     def get(self, *args, **kwargs):
@@ -19,28 +18,15 @@ class BaseAuthUserManager(BaseUserManager):
             user.update_fields(user_data)
         return user
 
+
     def filter(self, *args, **kwargs):
         try:
             queryset = super().filter(*args, **kwargs)
         except FieldError:
             user_ids = client.filter_user(**kwargs).get("user_id", [])
             queryset = super().filter(id__in=user_ids)
-
-        for obj in queryset:
-            obj.reload_meta()
         return queryset
 
-    def last(self):
-        user = super().last()
-        if user:
-            user.reload_meta()
-        return user
-
-    def all(self):
-        queryset = super().all()
-        for obj in queryset:
-            obj.reload_meta()
-        return queryset
 
     def get_by_natural_key(self, national_id):
         return self.get(national_id=national_id)

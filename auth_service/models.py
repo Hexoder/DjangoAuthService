@@ -6,6 +6,8 @@ from .managers import BaseAuthUserManager
 
 
 class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
+
+
     remote_fields = {"phone": None,
                      "email": None,
                      "first_name": None,
@@ -35,6 +37,9 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
         self.username: str = ""
         self.is_verified: bool = True
 
+        self.reload_meta()
+
+
     id = models.PositiveIntegerField(primary_key=True, unique=True)
     national_id = models.CharField(max_length=10, null=True, blank=True, unique=True)
     is_staff = models.BooleanField(default=False)
@@ -46,18 +51,19 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         abstract = True
 
+
     def reload_meta(self):
-        if len(self.email) > 1:
-            return self
         from .grpc_client.client import AuthClient
         client = AuthClient()
-        user_data = client.get_user_data(id=int(self.id))
-        self.update_fields(user_data)
+        try:
+            user_data = client.get_user_data(id=int(self.id))
+            self.update_fields(user_data)
+        except Exception:
+            ...
         return self
 
     def update_fields(self, fetched_user):
-        if len(self.email) > 1:
-            return self
+
         if fetched_user:
             for k, v in fetched_user.items():
                 match k:
@@ -77,13 +83,12 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
                             self.save(update_fields=['is_staff'])
                     case _:
                         setattr(self, k, v)
+                        self.save()
+
             return self
         else:
             return self
 
-    def __str__(self):
-        self.reload_meta()
-        return super().__str__()
 
 
 class User:
