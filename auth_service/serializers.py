@@ -45,11 +45,3 @@ class UserSerializer(BaseSerializer):
                 fields[field_name] = serializers.CharField(read_only=True)
 
         return fields
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        # Add custom logic here if needed (e.g., reload metadata)
-        instance.reload_meta()  # Ensure dynamic fields are loaded
-        for field_name in CustomUser.remote_fields:
-            representation[field_name] = getattr(instance, field_name)
-        return representation
