@@ -71,6 +71,9 @@ class AuthClient:
     def __exit__(self, exc_type, exc_value, traceback):
         self.channel.close()
 
+    def close(self):
+        self.channel.close()
+
     @try_except
     def get_user_data(self, **kwargs) -> dict:
         if user_id := kwargs.get("id"):
@@ -103,3 +106,12 @@ class AuthClient:
     @property
     def service_name(self):
         return self._service_name
+
+
+import atexit
+
+client = AuthClient()
+
+@atexit.register
+def cleanup():
+    client.close()
