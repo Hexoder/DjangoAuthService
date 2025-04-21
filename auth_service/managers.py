@@ -14,9 +14,11 @@ class BaseAuthUserManager(BaseUserManager):
             user_data = client.get_user_data(**kwargs)
             user = super().get(id=user_data.get("id"))
 
+
         if user and user_data:
             user.update_fields(user_data)
         return user
+
 
 
     def filter(self, *args, **kwargs):
@@ -26,6 +28,9 @@ class BaseAuthUserManager(BaseUserManager):
             user_ids = client.filter_user(**kwargs).get("user_id", [])
             queryset = super().filter(id__in=user_ids)
         return queryset
+
+    def all_users(self):
+        return self.filter()
 
 
     def get_by_natural_key(self, national_id):

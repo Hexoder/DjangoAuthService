@@ -40,17 +40,20 @@ class AuthClient:
     _instance = None
     _lock = Lock()
     _service_name = None
+    _sub_service_name = None
     _conn_address = None
 
     def __new__(cls):
         server_address = getattr(settings, "AUTH_GRPC_ADDRESS", "localhost")
         service_name = getattr(settings, "SERVICE_NAME", None)
+        sub_service_name = getattr(settings, "SUB_SERVICE_NAME", None)
 
         if not server_address:
             raise Exception("Define AUTH_SERVER_ADDRESS in django settings")
         if not service_name:
             raise Exception("Define SERVICE_NAME in django settings")
         AuthClient._service_name = service_name
+        AuthClient._sub_service_name = sub_service_name
 
         AuthClient._conn_address = f"{server_address}:50051"
 
@@ -80,7 +83,7 @@ class AuthClient:
             if user_data := cache.get(f"user_id_{user_id}"):
                 return user_data
 
-        request = auth_pb2.UserQuery(service_name=self.service_name, **kwargs)
+        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name, **kwargs)
         result = self.stub.GetUserData(request)
         dict_result = MessageToDict(result, preserving_proto_field_name=True)
         # if dict_result:
@@ -93,13 +96,13 @@ class AuthClient:
 
     @try_except
     def filter_user(self, **kwargs) -> dict[str, list[str]]:
-        request = auth_pb2.UserQuery(service_name=self.service_name, **kwargs)
+        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name, **kwargs)
         result = self.stub.FilterUser(request)
         return MessageToDict(result, preserving_proto_field_name=True)
 
     @try_except
     def verify_login(self, token: str) -> dict:
-        request = auth_pb2.VerifyLoginRequest(service_name=self.service_name, token=token)
+        request = auth_pb2.VerifyLoginRequest(service_name=self.service_name, sub_service_name=AuthClient._sub_service_name, token=token)
         result = self.stub.VerifyLogin(request)
         return MessageToDict(result, preserving_proto_field_name=True)
 

@@ -15,6 +15,9 @@ class AuthService:
 
         try:
             result = self.client.verify_login(self.token)
+            if not result:
+                raise AuthenticationFailed()
+
             user_id = result.get('user_id')
             user, created = User.objects.get_or_create(id=int(user_id))
             return user, self.token,

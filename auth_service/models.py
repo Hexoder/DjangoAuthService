@@ -6,8 +6,6 @@ from .managers import BaseAuthUserManager
 
 
 class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
-
-
     remote_fields = {"phone": None,
                      "email": None,
                      "first_name": None,
@@ -20,6 +18,11 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
                      "username": None,
                      "is_verified": None
                      }
+
+    def exists_in_db(self):
+        from django.contrib.auth import get_user_model
+        CustomUser = get_user_model()
+        return self.pk is not None and CustomUser.objects.filter(pk=self.pk).exists()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -37,8 +40,8 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
         self.username: str = ""
         self.is_verified: bool = True
 
-        self.reload_meta()
-
+        if self.exists_in_db():
+            self.reload_meta()
 
     id = models.PositiveIntegerField(primary_key=True, unique=True)
     national_id = models.CharField(max_length=10, null=True, blank=True, unique=True)
@@ -50,7 +53,6 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         abstract = True
-
 
     def reload_meta(self):
         from .grpc_client.client import AuthClient
@@ -88,7 +90,6 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
             return self
         else:
             return self
-
 
 
 class User:

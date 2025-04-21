@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nauth.proto\x12\x04\x61uth\"\x81\x02\n\tUserQuery\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x10\n\x08username\x18\x03 \x01(\t\x12\r\n\x05phone\x18\x04 \x01(\t\x12\r\n\x05\x65mail\x18\x05 \x01(\t\x12\x13\n\x0bnational_id\x18\x06 \x01(\t\x12\x12\n\nfirst_name\x18\x07 \x01(\t\x12\x11\n\tlast_name\x18\x08 \x01(\t\x12\x13\n\x0broles__name\x18\t \x01(\t\x12\x19\n\x11\x64\x65partments__name\x18\n \x01(\t\x12\x17\n\x0froles__name__in\x18\x0b \x03(\t\x12\x1d\n\x15\x64\x65partments__name__in\x18\x0c \x03(\t\"+\n\x0bServiceInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x64omain\x18\x02 \x01(\t\"\xaa\x02\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\"\n\x07service\x18\x02 \x01(\x0b\x32\x11.auth.ServiceInfo\x12\'\n\x0csub_services\x18\x03 \x03(\x0b\x32\x11.auth.ServiceInfo\x12\x13\n\x0bnational_id\x18\x04 \x01(\t\x12\x10\n\x08username\x18\x05 \x01(\t\x12\x12\n\nfirst_name\x18\x06 \x01(\t\x12\x11\n\tlast_name\x18\x07 \x01(\t\x12\r\n\x05phone\x18\x08 \x01(\t\x12\r\n\x05\x65mail\x18\t \x01(\t\x12\r\n\x05image\x18\n \x01(\t\x12\x13\n\x0b\x64\x65partments\x18\x0b \x03(\t\x12\r\n\x05roles\x18\x0c \x03(\t\x12\x14\n\x0cis_superuser\x18\r \x01(\x08\x12\x10\n\x08is_staff\x18\x0e \x01(\x08\"9\n\x12VerifyLoginRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\r\n\x05token\x18\x02 \x01(\t\"7\n\x13VerifyLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"\x1a\n\x07UserIds\x12\x0f\n\x07user_id\x18\x01 \x03(\x03\x32\xaf\x01\n\x0b\x41uthService\x12.\n\x0bGetUserData\x12\x0f.auth.UserQuery\x1a\x0e.auth.UserData\x12,\n\nFilterUser\x12\x0f.auth.UserQuery\x1a\r.auth.UserIds\x12\x42\n\x0bVerifyLogin\x12\x18.auth.VerifyLoginRequest\x1a\x19.auth.VerifyLoginResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nauth.proto\x12\x04\x61uth\"\xbd\x02\n\tUserQuery\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x10\n\x08username\x18\x03 \x01(\t\x12\r\n\x05phone\x18\x04 \x01(\t\x12\r\n\x05\x65mail\x18\x05 \x01(\t\x12\x13\n\x0bnational_id\x18\x06 \x01(\t\x12\x12\n\nfirst_name\x18\x07 \x01(\t\x12\x11\n\tlast_name\x18\x08 \x01(\t\x12\x13\n\x0broles__name\x18\t \x01(\t\x12\x19\n\x11\x64\x65partments__name\x18\n \x01(\t\x12\x17\n\x0froles__name__in\x18\x0b \x03(\t\x12\x1d\n\x15\x64\x65partments__name__in\x18\x0c \x03(\t\x12\x1e\n\x16sub_services__name__in\x18\r \x03(\t\x12\x1a\n\x12sub_services__name\x18\x0e \x01(\t\"+\n\x0bServiceInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x64omain\x18\x02 \x01(\t\"\xaa\x02\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\"\n\x07service\x18\x02 \x01(\x0b\x32\x11.auth.ServiceInfo\x12\'\n\x0csub_services\x18\x03 \x03(\x0b\x32\x11.auth.ServiceInfo\x12\x13\n\x0bnational_id\x18\x04 \x01(\t\x12\x10\n\x08username\x18\x05 \x01(\t\x12\x12\n\nfirst_name\x18\x06 \x01(\t\x12\x11\n\tlast_name\x18\x07 \x01(\t\x12\r\n\x05phone\x18\x08 \x01(\t\x12\r\n\x05\x65mail\x18\t \x01(\t\x12\r\n\x05image\x18\n \x01(\t\x12\x13\n\x0b\x64\x65partments\x18\x0b \x03(\t\x12\r\n\x05roles\x18\x0c \x03(\t\x12\x14\n\x0cis_superuser\x18\r \x01(\x08\x12\x10\n\x08is_staff\x18\x0e \x01(\x08\"S\n\x12VerifyLoginRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\x12\r\n\x05token\x18\x03 \x01(\t\"7\n\x13VerifyLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"\x1a\n\x07UserIds\x12\x0f\n\x07user_id\x18\x01 \x03(\x03\x32\xaf\x01\n\x0b\x41uthService\x12.\n\x0bGetUserData\x12\x0f.auth.UserQuery\x1a\x0e.auth.UserData\x12,\n\nFilterUser\x12\x0f.auth.UserQuery\x1a\r.auth.UserIds\x12\x42\n\x0bVerifyLogin\x12\x18.auth.VerifyLoginRequest\x1a\x19.auth.VerifyLoginResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,17 +32,17 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'auth_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_USERQUERY']._serialized_start=21
-  _globals['_USERQUERY']._serialized_end=278
-  _globals['_SERVICEINFO']._serialized_start=280
-  _globals['_SERVICEINFO']._serialized_end=323
-  _globals['_USERDATA']._serialized_start=326
-  _globals['_USERDATA']._serialized_end=624
-  _globals['_VERIFYLOGINREQUEST']._serialized_start=626
-  _globals['_VERIFYLOGINREQUEST']._serialized_end=683
-  _globals['_VERIFYLOGINRESPONSE']._serialized_start=685
-  _globals['_VERIFYLOGINRESPONSE']._serialized_end=740
-  _globals['_USERIDS']._serialized_start=742
-  _globals['_USERIDS']._serialized_end=768
-  _globals['_AUTHSERVICE']._serialized_start=771
-  _globals['_AUTHSERVICE']._serialized_end=946
+  _globals['_USERQUERY']._serialized_end=338
+  _globals['_SERVICEINFO']._serialized_start=340
+  _globals['_SERVICEINFO']._serialized_end=383
+  _globals['_USERDATA']._serialized_start=386
+  _globals['_USERDATA']._serialized_end=684
+  _globals['_VERIFYLOGINREQUEST']._serialized_start=686
+  _globals['_VERIFYLOGINREQUEST']._serialized_end=769
+  _globals['_VERIFYLOGINRESPONSE']._serialized_start=771
+  _globals['_VERIFYLOGINRESPONSE']._serialized_end=826
+  _globals['_USERIDS']._serialized_start=828
+  _globals['_USERIDS']._serialized_end=854
+  _globals['_AUTHSERVICE']._serialized_start=857
+  _globals['_AUTHSERVICE']._serialized_end=1032
 # @@protoc_insertion_point(module_scope)
