@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="auth_package",
-    version="1.1.6",
+    version="1.1.7",
     packages=find_packages(),
     install_requires=[
         "requests",
@@ -10,7 +10,9 @@ setup(
         "redis",
         "djangorestframework",
         "markdown",
-        "django-filter"
+        "django-filter",
+        "grpcio",
+        "grpcio-tools"
     ],
     description="A global authentication package for microservices",
     long_description=open("README.md").read(),

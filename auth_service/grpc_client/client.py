@@ -8,7 +8,7 @@ from django.core.cache import cache
 
 def get_secure_channel(server_domain):
     cert_path = 'authservice.pem'
-    # cert_path = Path(settings.CERT_FILE_PATH)
+
     # Load server certificate
     with open(cert_path, "rb") as f:
         trusted_certs = f.read()
@@ -49,13 +49,15 @@ class AuthClient:
         sub_service_name = getattr(settings, "SUB_SERVICE_NAME", None)
 
         if not server_address:
-            raise Exception("Define AUTH_SERVER_ADDRESS in django settings")
+            raise Exception("Define AUTH_GRPC_ADDRESS in django settings")
         if not service_name:
             raise Exception("Define SERVICE_NAME in django settings")
-        AuthClient._service_name = service_name
-        AuthClient._sub_service_name = sub_service_name
+        if not sub_service_name:
+            raise Exception("Define SUB_SERVICE_NAME in django settings")
 
-        AuthClient._conn_address = f"{server_address}:50051"
+        cls._service_name = service_name
+        cls._sub_service_name = sub_service_name
+        cls._conn_address = f"{server_address}:50051"
 
         with cls._lock:
             if cls._instance is None:
@@ -109,6 +111,10 @@ class AuthClient:
     @property
     def service_name(self):
         return self._service_name
+
+    @property
+    def sub_service_name(self):
+        return self._sub_service_name
 
 
 import atexit
