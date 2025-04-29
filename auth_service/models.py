@@ -96,5 +96,7 @@ class User:
     def __init__(self, id, user_data):
         self.id = id
         self.is_authenticated = True
+        remote_fields = BaseAuthUser.remote_fields
+        remote_fields.update({'national_id': None})
         for field_name, default_value in BaseAuthUser.remote_fields.items():
             setattr(self, field_name, user_data.get(field_name, default_value))

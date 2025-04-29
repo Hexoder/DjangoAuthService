@@ -4,6 +4,7 @@ from .grpc_client.client import AuthClient
 
 client = AuthClient()
 
+
 class BaseAuthUserManager(BaseUserManager):
 
     def get(self, *args, **kwargs):
@@ -14,12 +15,9 @@ class BaseAuthUserManager(BaseUserManager):
             user_data = client.get_user_data(**kwargs)
             user = super().get(id=user_data.get("id"))
 
-
         if user and user_data:
             user.update_fields(user_data)
         return user
-
-
 
     def filter(self, *args, **kwargs):
         try:
@@ -31,7 +29,6 @@ class BaseAuthUserManager(BaseUserManager):
 
     def all_users(self):
         return self.filter()
-
 
     def get_by_natural_key(self, national_id):
         return self.get(national_id=national_id)
