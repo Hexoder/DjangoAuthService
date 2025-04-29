@@ -49,6 +49,21 @@ class AuthServiceStub(object):
                 request_serializer=auth__pb2.VerifyLoginRequest.SerializeToString,
                 response_deserializer=auth__pb2.VerifyLoginResponse.FromString,
                 _registered_method=True)
+        self.CreateUser = channel.unary_unary(
+                '/auth.AuthService/CreateUser',
+                request_serializer=auth__pb2.CreateUserRequest.SerializeToString,
+                response_deserializer=auth__pb2.CreateUserResponse.FromString,
+                _registered_method=True)
+        self.GetRoles = channel.unary_unary(
+                '/auth.AuthService/GetRoles',
+                request_serializer=auth__pb2.GetRolesRequest.SerializeToString,
+                response_deserializer=auth__pb2.GetRolesResponse.FromString,
+                _registered_method=True)
+        self.GetDepartments = channel.unary_unary(
+                '/auth.AuthService/GetDepartments',
+                request_serializer=auth__pb2.GetDepartmentsRequest.SerializeToString,
+                response_deserializer=auth__pb2.GetDepartmentsResponse.FromString,
+                _registered_method=True)
 
 
 class AuthServiceServicer(object):
@@ -72,6 +87,24 @@ class AuthServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CreateUser(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetRoles(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetDepartments(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_AuthServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -89,6 +122,21 @@ def add_AuthServiceServicer_to_server(servicer, server):
                     servicer.VerifyLogin,
                     request_deserializer=auth__pb2.VerifyLoginRequest.FromString,
                     response_serializer=auth__pb2.VerifyLoginResponse.SerializeToString,
+            ),
+            'CreateUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.CreateUser,
+                    request_deserializer=auth__pb2.CreateUserRequest.FromString,
+                    response_serializer=auth__pb2.CreateUserResponse.SerializeToString,
+            ),
+            'GetRoles': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetRoles,
+                    request_deserializer=auth__pb2.GetRolesRequest.FromString,
+                    response_serializer=auth__pb2.GetRolesResponse.SerializeToString,
+            ),
+            'GetDepartments': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDepartments,
+                    request_deserializer=auth__pb2.GetDepartmentsRequest.FromString,
+                    response_serializer=auth__pb2.GetDepartmentsResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -172,6 +220,87 @@ class AuthService(object):
             '/auth.AuthService/VerifyLogin',
             auth__pb2.VerifyLoginRequest.SerializeToString,
             auth__pb2.VerifyLoginResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def CreateUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/auth.AuthService/CreateUser',
+            auth__pb2.CreateUserRequest.SerializeToString,
+            auth__pb2.CreateUserResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetRoles(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/auth.AuthService/GetRoles',
+            auth__pb2.GetRolesRequest.SerializeToString,
+            auth__pb2.GetRolesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetDepartments(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/auth.AuthService/GetDepartments',
+            auth__pb2.GetDepartmentsRequest.SerializeToString,
+            auth__pb2.GetDepartmentsResponse.FromString,
             options,
             channel_credentials,
             insecure,

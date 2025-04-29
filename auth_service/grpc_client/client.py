@@ -4,6 +4,7 @@ from threading import Lock
 from google.protobuf.json_format import MessageToDict
 from django.conf import settings
 from django.core.cache import cache
+import atexit
 
 
 def get_secure_channel(server_domain):
@@ -63,8 +64,8 @@ class AuthClient:
             if cls._instance is None:
                 cls._instance = super(AuthClient, cls).__new__(cls)
 
-                cls._instance.channel = get_secure_channel(server_address)
-                # cls._instance.channel = grpc.insecure_channel(cls._conn_address)
+                # cls._instance.channel = get_secure_channel(server_address)
+                cls._instance.channel = grpc.insecure_channel(cls._conn_address)
 
                 cls._instance.stub = auth_pb2_grpc.AuthServiceStub(cls._instance.channel)
 
@@ -85,7 +86,8 @@ class AuthClient:
             if user_data := cache.get(f"user_id_{user_id}"):
                 return user_data
 
-        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name, **kwargs)
+        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name,
+                                     **kwargs)
         result = self.stub.GetUserData(request)
         dict_result = MessageToDict(result, preserving_proto_field_name=True)
         # if dict_result:
@@ -98,14 +100,43 @@ class AuthClient:
 
     @try_except
     def filter_user(self, **kwargs) -> dict[str, list[str]]:
-        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name, **kwargs)
+        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name,
+                                     **kwargs)
         result = self.stub.FilterUser(request)
         return MessageToDict(result, preserving_proto_field_name=True)
 
     @try_except
     def verify_login(self, token: str) -> dict:
-        request = auth_pb2.VerifyLoginRequest(service_name=self.service_name, sub_service_name=AuthClient._sub_service_name, token=token)
+        request = auth_pb2.VerifyLoginRequest(service_name=self.service_name,
+                                              sub_service_name=AuthClient._sub_service_name, token=token)
         result = self.stub.VerifyLogin(request)
+        return MessageToDict(result, preserving_proto_field_name=True)
+
+    def get_roles(self):
+        request = auth_pb2.GetRolesRequest()
+        result = self.stub.GetRoles(request)
+        return MessageToDict(result, preserving_proto_field_name=True)
+
+    def get_departments(self):
+        request = auth_pb2.GetDepartmentsRequest()
+        result = self.stub.GetDepartments(request)
+        return MessageToDict(result, preserving_proto_field_name=True)
+
+    def create_user(self, national_id: str, first_name: str, last_name: str, phone: str, email: str, is_active: bool,
+                    role_name: str, department_name: str):
+        request = auth_pb2.CreateUserRequest(
+            service_name=self._service_name,
+            sub_service_name=self._sub_service_name,
+            national_id=national_id,
+            first_name=first_name,
+            last_name=last_name,
+            phone=phone,
+            email=email,
+            is_active=is_active,
+            role_name=role_name,
+            department_name=department_name
+        )
+        result = self.stub.CreateUser(request)
         return MessageToDict(result, preserving_proto_field_name=True)
 
     @property
@@ -117,9 +148,8 @@ class AuthClient:
         return self._sub_service_name
 
 
-import atexit
-
 client = AuthClient()
+
 
 @atexit.register
 def cleanup():
