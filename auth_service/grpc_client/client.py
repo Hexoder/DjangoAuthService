@@ -64,8 +64,8 @@ class AuthClient:
             if cls._instance is None:
                 cls._instance = super(AuthClient, cls).__new__(cls)
 
-                cls._instance.channel = get_secure_channel(server_address)
-                # cls._instance.channel = grpc.insecure_channel(cls._conn_address)
+                # cls._instance.channel = get_secure_channel(server_address)
+                cls._instance.channel = grpc.insecure_channel(cls._conn_address)
 
                 cls._instance.stub = auth_pb2_grpc.AuthServiceStub(cls._instance.channel)
 
@@ -99,10 +99,13 @@ class AuthClient:
         # self.get_user_data(**kwargs)
 
     @try_except
-    def filter_user(self, **kwargs) -> dict[str, list[str]]:
+    def filter_user(self, serialized=False, **kwargs) -> dict[str, list[str]]:
         request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name,
                                      **kwargs)
-        result = self.stub.FilterUser(request)
+        if serialized:
+            result = self.stub.FilterUserSerialized(request)
+        else:
+            result = self.stub.FilterUser(request)
         return MessageToDict(result, preserving_proto_field_name=True)
 
     @try_except
