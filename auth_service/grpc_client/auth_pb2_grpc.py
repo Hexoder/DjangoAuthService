@@ -52,7 +52,7 @@ class AuthServiceStub(object):
         self.CreateUser = channel.unary_unary(
                 '/auth.AuthService/CreateUser',
                 request_serializer=auth__pb2.CreateUserRequest.SerializeToString,
-                response_deserializer=auth__pb2.CreateUserResponse.FromString,
+                response_deserializer=auth__pb2.UserData.FromString,
                 _registered_method=True)
         self.GetRoles = channel.unary_unary(
                 '/auth.AuthService/GetRoles',
@@ -126,7 +126,7 @@ def add_AuthServiceServicer_to_server(servicer, server):
             'CreateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateUser,
                     request_deserializer=auth__pb2.CreateUserRequest.FromString,
-                    response_serializer=auth__pb2.CreateUserResponse.SerializeToString,
+                    response_serializer=auth__pb2.UserData.SerializeToString,
             ),
             'GetRoles': grpc.unary_unary_rpc_method_handler(
                     servicer.GetRoles,
@@ -246,7 +246,7 @@ class AuthService(object):
             target,
             '/auth.AuthService/CreateUser',
             auth__pb2.CreateUserRequest.SerializeToString,
-            auth__pb2.CreateUserResponse.FromString,
+            auth__pb2.UserData.FromString,
             options,
             channel_credentials,
             insecure,
