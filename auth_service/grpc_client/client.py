@@ -1,6 +1,7 @@
 import grpc
 from . import auth_pb2, auth_pb2_grpc
 from threading import Lock
+from pathlib import Path
 from google.protobuf.json_format import MessageToDict
 from django.conf import settings
 from django.core.cache import cache
@@ -8,7 +9,13 @@ import atexit
 
 
 def get_secure_channel(server_domain):
-    cert_path = 'authservice.pem'
+
+    
+    cert_path = Path(settings.AUTH_CERT_FILE_PATH)
+    if not cert_path.exists():
+        cert_path = 'authservice.pem'
+        
+
 
     # Load server certificate
     with open(cert_path, "rb") as f:
