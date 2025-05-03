@@ -9,13 +9,10 @@ import atexit
 
 
 def get_secure_channel(server_domain):
-
-    if hasattr(settings ,'AUTH_CERT_FILE_PATH'):
+    if hasattr(settings, 'AUTH_CERT_FILE_PATH'):
         cert_path = Path(settings.AUTH_CERT_FILE_PATH)
-    else : 
+    else:
         cert_path = 'authservice.pem'
-        
-
 
     # Load server certificate
     with open(cert_path, "rb") as f:
