@@ -71,7 +71,7 @@ class AuthServiceStub(object):
                 _registered_method=True)
         self.UpdateUser = channel.unary_unary(
                 '/auth.AuthService/UpdateUser',
-                request_serializer=auth__pb2.CreateUserRequest.SerializeToString,
+                request_serializer=auth__pb2.UpdateUserRequest.SerializeToString,
                 response_deserializer=auth__pb2.UserData.FromString,
                 _registered_method=True)
 
@@ -167,7 +167,7 @@ def add_AuthServiceServicer_to_server(servicer, server):
             ),
             'UpdateUser': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateUser,
-                    request_deserializer=auth__pb2.CreateUserRequest.FromString,
+                    request_deserializer=auth__pb2.UpdateUserRequest.FromString,
                     response_serializer=auth__pb2.UserData.SerializeToString,
             ),
     }
@@ -385,7 +385,7 @@ class AuthService(object):
             request,
             target,
             '/auth.AuthService/UpdateUser',
-            auth__pb2.CreateUserRequest.SerializeToString,
+            auth__pb2.UpdateUserRequest.SerializeToString,
             auth__pb2.UserData.FromString,
             options,
             channel_credentials,
