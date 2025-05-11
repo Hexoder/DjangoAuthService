@@ -3,8 +3,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from .grpc_client.client import AuthClient
 
-
 client = AuthClient()
+
 
 class AuthServiceConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'

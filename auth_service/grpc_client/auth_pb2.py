@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nauth.proto\x12\x04\x61uth\"\xbd\x02\n\tUserQuery\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x10\n\x08username\x18\x03 \x01(\t\x12\r\n\x05phone\x18\x04 \x01(\t\x12\r\n\x05\x65mail\x18\x05 \x01(\t\x12\x13\n\x0bnational_id\x18\x06 \x01(\t\x12\x12\n\nfirst_name\x18\x07 \x01(\t\x12\x11\n\tlast_name\x18\x08 \x01(\t\x12\x13\n\x0broles__name\x18\t \x01(\t\x12\x19\n\x11\x64\x65partments__name\x18\n \x01(\t\x12\x17\n\x0froles__name__in\x18\x0b \x03(\t\x12\x1d\n\x15\x64\x65partments__name__in\x18\x0c \x03(\t\x12\x1e\n\x16sub_services__name__in\x18\r \x03(\t\x12\x1a\n\x12sub_services__name\x18\x0e \x01(\t\"@\n\x0bServiceInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x64omain\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63\x63\x65ss_type\x18\x03 \x01(\t\"\xaa\x02\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\"\n\x07service\x18\x02 \x01(\x0b\x32\x11.auth.ServiceInfo\x12\'\n\x0csub_services\x18\x03 \x03(\x0b\x32\x11.auth.ServiceInfo\x12\x13\n\x0bnational_id\x18\x04 \x01(\t\x12\x10\n\x08username\x18\x05 \x01(\t\x12\x12\n\nfirst_name\x18\x06 \x01(\t\x12\x11\n\tlast_name\x18\x07 \x01(\t\x12\r\n\x05phone\x18\x08 \x01(\t\x12\r\n\x05\x65mail\x18\t \x01(\t\x12\r\n\x05image\x18\n \x01(\t\x12\x13\n\x0b\x64\x65partments\x18\x0b \x03(\t\x12\r\n\x05roles\x18\x0c \x03(\t\x12\x14\n\x0cis_superuser\x18\r \x01(\x08\x12\x10\n\x08is_staff\x18\x0e \x01(\x08\"-\n\x0cUserDataList\x12\x1d\n\x05users\x18\x01 \x03(\x0b\x32\x0e.auth.UserData\"S\n\x12VerifyLoginRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\x12\r\n\x05token\x18\x03 \x01(\t\"7\n\x13VerifyLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"\x1a\n\x07UserIds\x12\x0f\n\x07user_id\x18\x01 \x03(\x03\"\xee\x01\n\x11\x43reateUserRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\x12\x13\n\x0bnational_id\x18\x03 \x01(\t\x12\x12\n\nfirst_name\x18\x04 \x01(\t\x12\x11\n\tlast_name\x18\x05 \x01(\t\x12\x10\n\x08username\x18\x06 \x01(\t\x12\r\n\x05phone\x18\x07 \x01(\t\x12\r\n\x05\x65mail\x18\x08 \x01(\t\x12\x11\n\tis_active\x18\t \x01(\x08\x12\x11\n\trole_name\x18\n \x01(\t\x12\x17\n\x0f\x64\x65partment_name\x18\x0b \x01(\t\"\xaf\x01\n\x11UpdateUserRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\x12\x13\n\x0bnational_id\x18\x03 \x01(\t\x12\x12\n\nfirst_name\x18\x04 \x01(\t\x12\x11\n\tlast_name\x18\x05 \x01(\t\x12\x10\n\x08username\x18\x06 \x01(\t\x12\r\n\x05phone\x18\x07 \x01(\t\x12\r\n\x05\x65mail\x18\x08 \x01(\t\"\x11\n\x0fGetRolesRequest\".\n\x08RoleInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_level\x18\x02 \x01(\x03\"1\n\x10GetRolesResponse\x12\x1d\n\x05roles\x18\x01 \x03(\x0b\x32\x0e.auth.RoleInfo\"\x17\n\x15GetDepartmentsRequest\"4\n\x0e\x44\x65partmentInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_level\x18\x02 \x01(\x03\"C\n\x16GetDepartmentsResponse\x12)\n\x0b\x64\x65partments\x18\x01 \x03(\x0b\x32\x14.auth.DepartmentInfo2\xe2\x03\n\x0b\x41uthService\x12.\n\x0bGetUserData\x12\x0f.auth.UserQuery\x1a\x0e.auth.UserData\x12,\n\nFilterUser\x12\x0f.auth.UserQuery\x1a\r.auth.UserIds\x12;\n\x14\x46ilterUserSerialized\x12\x0f.auth.UserQuery\x1a\x12.auth.UserDataList\x12\x42\n\x0bVerifyLogin\x12\x18.auth.VerifyLoginRequest\x1a\x19.auth.VerifyLoginResponse\x12\x35\n\nCreateUser\x12\x17.auth.CreateUserRequest\x1a\x0e.auth.UserData\x12\x39\n\x08GetRoles\x12\x15.auth.GetRolesRequest\x1a\x16.auth.GetRolesResponse\x12K\n\x0eGetDepartments\x12\x1b.auth.GetDepartmentsRequest\x1a\x1c.auth.GetDepartmentsResponse\x12\x35\n\nUpdateUser\x12\x17.auth.UpdateUserRequest\x1a\x0e.auth.UserDatab\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nauth.proto\x12\x04\x61uth\"\xd0\x02\n\tUserQuery\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x10\n\x08username\x18\x03 \x01(\t\x12\r\n\x05phone\x18\x04 \x01(\t\x12\r\n\x05\x65mail\x18\x05 \x01(\t\x12\x13\n\x0bnational_id\x18\x06 \x01(\t\x12\x12\n\nfirst_name\x18\x07 \x01(\t\x12\x11\n\tlast_name\x18\x08 \x01(\t\x12\x13\n\x0broles__name\x18\t \x01(\t\x12\x19\n\x11\x64\x65partments__name\x18\n \x01(\t\x12\x17\n\x0froles__name__in\x18\x0b \x03(\t\x12\x1d\n\x15\x64\x65partments__name__in\x18\x0c \x03(\t\x12\x1e\n\x16sub_services__name__in\x18\r \x03(\t\x12\x1a\n\x12sub_services__name\x18\x0e \x01(\t\x12\x11\n\tis_active\x18\x0f \x01(\x08\"O\n\x0bServiceInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x64omain\x18\x02 \x01(\t\x12\x13\n\x0b\x61\x63\x63\x65ss_type\x18\x03 \x01(\t\x12\r\n\x05roles\x18\x04 \x03(\t\"\xbd\x02\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\"\n\x07service\x18\x02 \x01(\x0b\x32\x11.auth.ServiceInfo\x12\'\n\x0csub_services\x18\x03 \x03(\x0b\x32\x11.auth.ServiceInfo\x12\x13\n\x0bnational_id\x18\x04 \x01(\t\x12\x10\n\x08username\x18\x05 \x01(\t\x12\x12\n\nfirst_name\x18\x06 \x01(\t\x12\x11\n\tlast_name\x18\x07 \x01(\t\x12\r\n\x05phone\x18\x08 \x01(\t\x12\r\n\x05\x65mail\x18\t \x01(\t\x12\r\n\x05image\x18\n \x01(\t\x12\x13\n\x0b\x64\x65partments\x18\x0b \x03(\t\x12\r\n\x05roles\x18\x0c \x03(\t\x12\x11\n\tis_active\x18\r \x01(\x08\x12\x14\n\x0cis_superuser\x18\x0e \x01(\x08\x12\x10\n\x08is_staff\x18\x0f \x01(\x08\"-\n\x0cUserDataList\x12\x1d\n\x05users\x18\x01 \x03(\x0b\x32\x0e.auth.UserData\"S\n\x12VerifyLoginRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\x12\r\n\x05token\x18\x03 \x01(\t\"7\n\x13VerifyLoginResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"\x1a\n\x07UserIds\x12\x0f\n\x07user_id\x18\x01 \x03(\x03\"\x83\x02\n\x11\x43reateUserRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\x12\x13\n\x0bnational_id\x18\x03 \x01(\t\x12\x12\n\nfirst_name\x18\x04 \x01(\t\x12\x11\n\tlast_name\x18\x05 \x01(\t\x12\r\n\x05phone\x18\x06 \x01(\t\x12\r\n\x05\x65mail\x18\x07 \x01(\t\x12\x10\n\x08username\x18\x08 \x01(\t\x12\x16\n\tis_active\x18\t \x01(\x08H\x00\x88\x01\x01\x12\x12\n\nrole_names\x18\n \x03(\t\x12\x18\n\x10\x64\x65partment_names\x18\x0b \x03(\tB\x0c\n\n_is_active\"\xd9\x02\n\x11UpdateUserRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\x12\x0f\n\x02id\x18\x03 \x01(\x03H\x00\x88\x01\x01\x12\x18\n\x0bnational_id\x18\x04 \x01(\tH\x01\x88\x01\x01\x12\x17\n\nfirst_name\x18\x05 \x01(\tH\x02\x88\x01\x01\x12\x16\n\tlast_name\x18\x06 \x01(\tH\x03\x88\x01\x01\x12\x15\n\x08username\x18\x07 \x01(\tH\x04\x88\x01\x01\x12\x12\n\x05phone\x18\x08 \x01(\tH\x05\x88\x01\x01\x12\x12\n\x05\x65mail\x18\t \x01(\tH\x06\x88\x01\x01\x12\x16\n\tis_active\x18\n \x01(\x08H\x07\x88\x01\x01\x42\x05\n\x03_idB\x0e\n\x0c_national_idB\r\n\x0b_first_nameB\x0c\n\n_last_nameB\x0b\n\t_usernameB\x08\n\x06_phoneB\x08\n\x06_emailB\x0c\n\n_is_active\"A\n\x0fGetRolesRequest\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x18\n\x10sub_service_name\x18\x02 \x01(\t\"!\n\x10GetRolesResponse\x12\r\n\x05roles\x18\x01 \x03(\t\"\x17\n\x15GetDepartmentsRequest\"4\n\x0e\x44\x65partmentInfo\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x14\n\x0c\x61\x63\x63\x65ss_level\x18\x02 \x01(\x03\"C\n\x16GetDepartmentsResponse\x12)\n\x0b\x64\x65partments\x18\x01 \x03(\x0b\x32\x14.auth.DepartmentInfo2\xe2\x03\n\x0b\x41uthService\x12.\n\x0bGetUserData\x12\x0f.auth.UserQuery\x1a\x0e.auth.UserData\x12,\n\nFilterUser\x12\x0f.auth.UserQuery\x1a\r.auth.UserIds\x12;\n\x14\x46ilterUserSerialized\x12\x0f.auth.UserQuery\x1a\x12.auth.UserDataList\x12\x42\n\x0bVerifyLogin\x12\x18.auth.VerifyLoginRequest\x1a\x19.auth.VerifyLoginResponse\x12\x35\n\nCreateUser\x12\x17.auth.CreateUserRequest\x1a\x0e.auth.UserData\x12\x39\n\x08GetRoles\x12\x15.auth.GetRolesRequest\x1a\x16.auth.GetRolesResponse\x12K\n\x0eGetDepartments\x12\x1b.auth.GetDepartmentsRequest\x1a\x1c.auth.GetDepartmentsResponse\x12\x35\n\nUpdateUser\x12\x17.auth.UpdateUserRequest\x1a\x0e.auth.UserDatab\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,35 +32,33 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'auth_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_USERQUERY']._serialized_start=21
-  _globals['_USERQUERY']._serialized_end=338
-  _globals['_SERVICEINFO']._serialized_start=340
-  _globals['_SERVICEINFO']._serialized_end=404
-  _globals['_USERDATA']._serialized_start=407
-  _globals['_USERDATA']._serialized_end=705
-  _globals['_USERDATALIST']._serialized_start=707
-  _globals['_USERDATALIST']._serialized_end=752
-  _globals['_VERIFYLOGINREQUEST']._serialized_start=754
-  _globals['_VERIFYLOGINREQUEST']._serialized_end=837
-  _globals['_VERIFYLOGINRESPONSE']._serialized_start=839
-  _globals['_VERIFYLOGINRESPONSE']._serialized_end=894
-  _globals['_USERIDS']._serialized_start=896
-  _globals['_USERIDS']._serialized_end=922
-  _globals['_CREATEUSERREQUEST']._serialized_start=925
-  _globals['_CREATEUSERREQUEST']._serialized_end=1163
-  _globals['_UPDATEUSERREQUEST']._serialized_start=1166
-  _globals['_UPDATEUSERREQUEST']._serialized_end=1341
-  _globals['_GETROLESREQUEST']._serialized_start=1343
-  _globals['_GETROLESREQUEST']._serialized_end=1360
-  _globals['_ROLEINFO']._serialized_start=1362
-  _globals['_ROLEINFO']._serialized_end=1408
-  _globals['_GETROLESRESPONSE']._serialized_start=1410
-  _globals['_GETROLESRESPONSE']._serialized_end=1459
-  _globals['_GETDEPARTMENTSREQUEST']._serialized_start=1461
-  _globals['_GETDEPARTMENTSREQUEST']._serialized_end=1484
-  _globals['_DEPARTMENTINFO']._serialized_start=1486
-  _globals['_DEPARTMENTINFO']._serialized_end=1538
-  _globals['_GETDEPARTMENTSRESPONSE']._serialized_start=1540
-  _globals['_GETDEPARTMENTSRESPONSE']._serialized_end=1607
-  _globals['_AUTHSERVICE']._serialized_start=1610
-  _globals['_AUTHSERVICE']._serialized_end=2092
+  _globals['_USERQUERY']._serialized_end=357
+  _globals['_SERVICEINFO']._serialized_start=359
+  _globals['_SERVICEINFO']._serialized_end=438
+  _globals['_USERDATA']._serialized_start=441
+  _globals['_USERDATA']._serialized_end=758
+  _globals['_USERDATALIST']._serialized_start=760
+  _globals['_USERDATALIST']._serialized_end=805
+  _globals['_VERIFYLOGINREQUEST']._serialized_start=807
+  _globals['_VERIFYLOGINREQUEST']._serialized_end=890
+  _globals['_VERIFYLOGINRESPONSE']._serialized_start=892
+  _globals['_VERIFYLOGINRESPONSE']._serialized_end=947
+  _globals['_USERIDS']._serialized_start=949
+  _globals['_USERIDS']._serialized_end=975
+  _globals['_CREATEUSERREQUEST']._serialized_start=978
+  _globals['_CREATEUSERREQUEST']._serialized_end=1237
+  _globals['_UPDATEUSERREQUEST']._serialized_start=1240
+  _globals['_UPDATEUSERREQUEST']._serialized_end=1585
+  _globals['_GETROLESREQUEST']._serialized_start=1587
+  _globals['_GETROLESREQUEST']._serialized_end=1652
+  _globals['_GETROLESRESPONSE']._serialized_start=1654
+  _globals['_GETROLESRESPONSE']._serialized_end=1687
+  _globals['_GETDEPARTMENTSREQUEST']._serialized_start=1689
+  _globals['_GETDEPARTMENTSREQUEST']._serialized_end=1712
+  _globals['_DEPARTMENTINFO']._serialized_start=1714
+  _globals['_DEPARTMENTINFO']._serialized_end=1766
+  _globals['_GETDEPARTMENTSRESPONSE']._serialized_start=1768
+  _globals['_GETDEPARTMENTSRESPONSE']._serialized_end=1835
+  _globals['_AUTHSERVICE']._serialized_start=1838
+  _globals['_AUTHSERVICE']._serialized_end=2320
 # @@protoc_insertion_point(module_scope)

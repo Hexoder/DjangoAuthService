@@ -7,6 +7,8 @@ from django.conf import settings
 from django.core.cache import cache
 import atexit
 
+from ..exceptions import try_except
+
 
 def get_secure_channel(server_domain):
     if hasattr(settings, 'AUTH_CERT_FILE_PATH'):
@@ -23,22 +25,6 @@ def get_secure_channel(server_domain):
 
     # Create a secure channel
     return grpc.secure_channel(f"{server_domain}:50051", credentials)
-
-
-def try_except(func):
-    def wrapper(*args, **kwargs):
-        try:
-            result = func(*args, **kwargs)
-            return result
-
-        except grpc.RpcError as e:
-            error_message = f"Error: {e.code()} - {e.details()}"
-            print(error_message)
-
-        except Exception as err:
-            print(err)
-
-    return wrapper
 
 
 class AuthClient:
@@ -67,7 +53,6 @@ class AuthClient:
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super(AuthClient, cls).__new__(cls)
-
                 cls._instance.channel = get_secure_channel(server_address)
                 # cls._instance.channel = grpc.insecure_channel(cls._conn_address)
 
@@ -94,13 +79,10 @@ class AuthClient:
                                      **kwargs)
         result = self.stub.GetUserData(request)
         dict_result = MessageToDict(result, preserving_proto_field_name=True)
-        # if dict_result:
         cache_key = f"user_id_{dict_result['id']}"
         if cache_key:
             cache.set(cache_key, dict_result)
         return dict_result
-
-        # self.get_user_data(**kwargs)
 
     @try_except
     def filter_user(self, serialized=False, **kwargs) -> dict[str, list[str]]:
@@ -129,7 +111,9 @@ class AuthClient:
         result = self.stub.GetDepartments(request)
         return MessageToDict(result, preserving_proto_field_name=True)
 
-    def create_user(self, national_id: str, first_name: str, last_name: str, username:str, phone: str, email: str, is_active: bool,
+    @try_except
+    def create_user(self, national_id: str, first_name: str, last_name: str, username: str, phone: str, email: str,
+                    is_active: bool,
                     role_name: str, department_name: str):
         request = auth_pb2.CreateUserRequest(
             service_name=self._service_name,
@@ -147,7 +131,9 @@ class AuthClient:
         result = self.stub.CreateUser(request)
         return MessageToDict(result, preserving_proto_field_name=True)
 
-    def update_user(self, national_id, first_name: str=None, last_name: str=None,username:str=None, phone: str=None, email: str=None):
+    @try_except
+    def update_user(self, national_id, first_name: str = None, last_name: str = None, username: str = None,
+                    phone: str = None, email: str = None, is_active: bool = None):
         request = auth_pb2.UpdateUserRequest(
             service_name=self._service_name,
             sub_service_name=self._sub_service_name,
@@ -157,6 +143,7 @@ class AuthClient:
             username=username,
             phone=phone,
             email=email,
+            is_active=is_active
         )
         result = self.stub.UpdateUser(request)
         return MessageToDict(result, preserving_proto_field_name=True)
