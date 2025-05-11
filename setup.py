@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="auth_package",
-    version="1.3.3",
+    version="1.3.4",
     packages=find_packages(),
     install_requires=[
         "requests",

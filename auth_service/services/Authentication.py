@@ -15,14 +15,12 @@ class AuthService:
 
         try:
             result = self.client.verify_login(self.token)
-            if not result:
-                raise AuthenticationFailed()
-
             user_id = result.get('user_id')
             user, created = User.objects.get_or_create(id=int(user_id))
             return user, self.token,
         except Exception as err:
-            raise AuthenticationFailed(f"Authentication failed: {str(err)}")
+            err.__dict__.update({'msg': "Authentication failed"})
+            raise AuthenticationFailed(err.__dict__)
 
     def _non_user_model_authenticate(self):
         from ..models import User

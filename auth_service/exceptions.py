@@ -38,26 +38,23 @@ class GRPC_Value_Exception(GRPC_Exception):
 
 def try_except(func):
     def wrapper(*args, **kwargs):
+
         try:
-            try:
-                result = func(*args, **kwargs)
-                return result
+            result = func(*args, **kwargs)
+            return result
 
-            except grpc.RpcError as e:
-                status_code = e.code().value[0]
-                status_detail = e.code().name
-                detail = e.details()
-                raise GRPC_Exception(status_code=status_code, status_detail=status_detail, detail=detail)
+        except grpc.RpcError as e:
+            status_code = e.code().value[0]
+            status_detail = e.code().name
+            detail = e.details()
+            raise GRPC_Exception(status_code=status_code, status_detail=status_detail, detail=detail)
 
-            except ValueError as e:
-                import re
-                error_text = e.__str__()
-                field_name = re.findall(r'"([^"]+)"', error_text)[0]
-                raise GRPC_Value_Exception(field_name=field_name, detail=error_text)
+        except ValueError as e:
+            import re
+            error_text = e.__str__()
+            field_name = re.findall(r'"([^"]+)"', error_text)[0]
+            raise GRPC_Value_Exception(field_name=field_name, detail=error_text)
 
-            except Exception as err:
-                print(err)
-        except Exception as err:
-            print(str(err))
+
 
     return wrapper
