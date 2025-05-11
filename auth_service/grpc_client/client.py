@@ -78,7 +78,7 @@ class AuthClient:
         request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name,
                                      **kwargs)
         result = self.stub.GetUserData(request)
-        dict_result = MessageToDict(result, preserving_proto_field_name=True)
+        dict_result = MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
         cache_key = f"user_id_{dict_result['id']}"
         if cache_key:
             cache.set(cache_key, dict_result)
@@ -92,24 +92,24 @@ class AuthClient:
             result = self.stub.FilterUserSerialized(request)
         else:
             result = self.stub.FilterUser(request)
-        return MessageToDict(result, preserving_proto_field_name=True)
+        return MessageToDict(result, preserving_proto_field_name=True,  always_print_fields_with_no_presence=True)
 
     @try_except
     def verify_login(self, token: str) -> dict:
         request = auth_pb2.VerifyLoginRequest(service_name=self.service_name,
                                               sub_service_name=AuthClient._sub_service_name, token=token)
         result = self.stub.VerifyLogin(request)
-        return MessageToDict(result, preserving_proto_field_name=True)
+        return MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
 
     def get_roles(self):
         request = auth_pb2.GetRolesRequest()
         result = self.stub.GetRoles(request)
-        return MessageToDict(result, preserving_proto_field_name=True)
+        return MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
 
     def get_departments(self):
         request = auth_pb2.GetDepartmentsRequest()
         result = self.stub.GetDepartments(request)
-        return MessageToDict(result, preserving_proto_field_name=True)
+        return MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
 
     @try_except
     def create_user(self, national_id: str, first_name: str, last_name: str, username: str, phone: str, email: str,
@@ -129,14 +129,15 @@ class AuthClient:
             department_name=department_name
         )
         result = self.stub.CreateUser(request)
-        return MessageToDict(result, preserving_proto_field_name=True)
+        return MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
 
     @try_except
-    def update_user(self, national_id, first_name: str = None, last_name: str = None, username: str = None,
+    def update_user(self,id:int=None, national_id:str=None, first_name: str = None, last_name: str = None, username: str = None,
                     phone: str = None, email: str = None, is_active: bool = None):
         request = auth_pb2.UpdateUserRequest(
             service_name=self._service_name,
             sub_service_name=self._sub_service_name,
+            id=id,
             national_id=national_id,
             first_name=first_name,
             last_name=last_name,
@@ -146,7 +147,11 @@ class AuthClient:
             is_active=is_active
         )
         result = self.stub.UpdateUser(request)
-        return MessageToDict(result, preserving_proto_field_name=True)
+        dict_result = MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
+        cache_key = f"user_id_{dict_result['id']}"
+        if cache_key:
+            cache.set(cache_key, dict_result)
+        return dict_result
 
     @property
     def service_name(self):

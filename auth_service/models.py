@@ -16,7 +16,8 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
                      "departments": [],
                      "image": None,
                      "username": None,
-                     "is_verified": None
+                     "is_verified": None,
+                     "is_active": None
                      }
 
     def exists_in_db(self):
@@ -39,6 +40,7 @@ class BaseAuthUser(AbstractBaseUser, PermissionsMixin):
         self.image: str = ""
         self.username: str = ""
         self.is_verified: bool = True
+        self.is_active: bool = False
 
         if self.exists_in_db():
             self.reload_meta()
