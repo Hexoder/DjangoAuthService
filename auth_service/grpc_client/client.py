@@ -75,7 +75,7 @@ class AuthClient:
             if user_data := cache.get(f"user_id_{user_id}"):
                 return user_data
 
-        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name,
+        request = auth_pb2.UserQuery(service__name=self.service_name, sub_service__name=AuthClient._sub_service_name,
                                      **kwargs)
         result = self.stub.GetUserData(request)
         dict_result = MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
@@ -86,7 +86,7 @@ class AuthClient:
 
     @try_except
     def filter_user(self, serialized=False, **kwargs) -> dict[str, list[str]]:
-        request = auth_pb2.UserQuery(service_name=self.service_name, sub_services__name=AuthClient._sub_service_name,
+        request = auth_pb2.UserQuery(service_name=self.service_name, sub_service__name=AuthClient._sub_service_name,
                                      **kwargs)
         if serialized:
             result = self.stub.FilterUserSerialized(request)
