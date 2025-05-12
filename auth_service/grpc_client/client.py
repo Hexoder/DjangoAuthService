@@ -114,7 +114,7 @@ class AuthClient:
     @try_except
     def create_user(self, national_id: str, first_name: str, last_name: str, username: str, phone: str, email: str,
                     is_active: bool,
-                    role_name: str, department_name: str):
+                    role_names: list[str], department_name: str):
         request = auth_pb2.CreateUserRequest(
             service_name=self._service_name,
             sub_service_name=self._sub_service_name,
@@ -125,7 +125,7 @@ class AuthClient:
             phone=phone,
             email=email,
             is_active=is_active,
-            role_name=role_name,
+            role_names=role_names,
             department_name=department_name
         )
         result = self.stub.CreateUser(request)
