@@ -86,7 +86,7 @@ class AuthClient:
 
     @try_except
     def filter_user(self, serialized=False, **kwargs) -> dict[str, list[str]]:
-        request = auth_pb2.UserQuery(service_name=self.service_name, sub_service__name=AuthClient._sub_service_name,
+        request = auth_pb2.UserQuery(service__name=self.service_name, sub_service__name=AuthClient._sub_service_name,
                                      **kwargs)
         if serialized:
             result = self.stub.FilterUserSerialized(request)
