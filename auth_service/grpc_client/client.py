@@ -81,7 +81,7 @@ class AuthClient:
         dict_result = MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
         cache_key = f"user_id_{dict_result['id']}"
         if cache_key:
-            cache.set(cache_key, dict_result)
+            cache.set(cache_key, dict_result, timeout=60)
         return dict_result
 
     @try_except
@@ -150,7 +150,7 @@ class AuthClient:
         dict_result = MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
         cache_key = f"user_id_{dict_result['id']}"
         if cache_key:
-            cache.set(cache_key, dict_result)
+            cache.set(cache_key, dict_result, timeout=60)
         return dict_result
 
     @property
