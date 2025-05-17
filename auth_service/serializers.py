@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from auth_service.grpc_client.client import AuthClient
 
 CustomUser = get_user_model()
+client = AuthClient()
 
 
 class BaseSerializer(serializers.ModelSerializer):
@@ -45,3 +47,24 @@ class UserSerializer(BaseSerializer):
                 fields[field_name] = serializers.CharField(read_only=True)
 
         return fields
+
+class SignalSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=True)
+
+    @staticmethod
+    def validate_id(value):
+        if CustomUser.objects.filter(id=value).exists():
+            raise serializers.ValidationError(f"user with id {value} already exists!")
+
+        return value
+
+    def create(self, validated_data):
+        try:
+            user_id = validated_data.get('id')
+            user_data = client.get_user_data(id=user_id)
+            user = CustomUser.objects.create(id=user_id)
+            return user
+        except Exception as err:
+            res = serializers.ValidationError(err.dict)
+            res.status_code = 404
+            raise res

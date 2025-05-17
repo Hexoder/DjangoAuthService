@@ -1,9 +1,7 @@
 from django.apps import AppConfig
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from .grpc_client.client import AuthClient
-
-client = AuthClient()
+from django.core.exceptions import ImproperlyConfigured
+from auth_service.utils import get_user_model_from_string
 
 
 class AuthServiceConfig(AppConfig):
@@ -15,18 +13,21 @@ class AuthServiceConfig(AppConfig):
         self.USER_DB_MODEL = False
 
     def ready(self):
-        DB_USER_MODEL = getattr(settings, 'USER_DB_MODEL', False)
-        if DB_USER_MODEL:
-            if settings.AUTH_USER_MODEL == 'auth.User':
-                raise Exception('You must define a custom AUTH_USER_MODEL inheriting BaseAuthUser...')
-            self.USER_DB_MODEL = True
-            try:
-                user_ids = client.filter_user().get('user_id')
-                User = get_user_model()
-                new_user_ids = set(map(int, user_ids))
-                existing_user_ids = set(User.objects.values_list('id', flat=True))
-                diff = new_user_ids.difference(existing_user_ids)
-                for user_id in diff:
-                    User.objects.create(id=int(user_id))
-            except Exception as err:
-                print("error fetching users, " + str(err))
+        if not getattr(settings, 'USER_DB_MODEL', False):
+            return
+
+        AUTH_USER_MODEL: str = getattr(settings, 'AUTH_USER_MODEL', None)
+
+        if not AUTH_USER_MODEL:
+            raise ImproperlyConfigured('You must define a custom AUTH_USER_MODEL')
+
+        User = get_user_model_from_string(AUTH_USER_MODEL)
+
+        from auth_service.models import BaseAuthUser
+
+        if not issubclass(User, BaseAuthUser):
+            raise ImproperlyConfigured(
+                'Your custom AUTH_USER_MODEL must inherit from BaseAuthUser'
+            )
+
+        self.USER_DB_MODEL = True

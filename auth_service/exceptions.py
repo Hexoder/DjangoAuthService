@@ -55,6 +55,4 @@ def try_except(func):
             field_name = re.findall(r'"([^"]+)"', error_text)[0]
             raise GRPC_Value_Exception(field_name=field_name, detail=error_text)
 
-
-
     return wrapper
