@@ -11,19 +11,10 @@ from ..exceptions import try_except
 
 
 def get_secure_channel(server_domain):
-    if hasattr(settings, 'AUTH_CERT_FILE_PATH'):
-        cert_path = Path(settings.AUTH_CERT_FILE_PATH)
-    else:
-        cert_path = 'authservice.pem'
-
-    # Load server certificate
+    cert_path = getattr(settings, 'AUTH_CERT_FILE_PATH', 'authservice.pem')
     with open(cert_path, "rb") as f:
         trusted_certs = f.read()
-
-    # Create SSL/TLS credentials
     credentials = grpc.ssl_channel_credentials(root_certificates=trusted_certs)
-
-    # Create a secure channel
     return grpc.secure_channel(f"{server_domain}:50051", credentials)
 
 
@@ -53,12 +44,43 @@ class AuthClient:
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super(AuthClient, cls).__new__(cls)
-                cls._instance.channel = get_secure_channel(server_address)
-                # cls._instance.channel = grpc.insecure_channel(cls._conn_address)
-
-                cls._instance.stub = auth_pb2_grpc.AuthServiceStub(cls._instance.channel)
+                cls._instance._create_channel()
 
         return cls._instance
+
+    def _create_channel(self):
+        server_domain = self._conn_address.split(":")[0]
+        self.channel = get_secure_channel(server_domain)
+        self.stub = self._wrap_stub(auth_pb2_grpc.AuthServiceStub(self.channel))
+
+    def _wrap_stub(self, stub):
+        """
+        Wraps each method of the stub to auto-reset channel on specific errors.
+        """
+        class SafeStub:
+            def __init__(safe_self):
+                safe_self._stub = stub
+
+            def __getattr__(safe_self, name):
+                func = getattr(safe_self._stub, name)
+
+                def wrapped(*args, **kwargs):
+                    try:
+                        return func(*args, **kwargs)
+                    except grpc.RpcError as e:
+                        if e.code() in (
+                            grpc.StatusCode.UNAVAILABLE,
+                            grpc.StatusCode.INTERNAL,
+                            grpc.StatusCode.DEADLINE_EXCEEDED,
+                            grpc.StatusCode.UNKNOWN,
+                        ):
+                            # Reconnect
+                            self._create_channel()
+                            func_retry = getattr(self.stub, name)
+                            return func_retry(*args, **kwargs)
+                        raise  # Raise other unexpected errors
+                return wrapped
+        return SafeStub()
 
     def __enter__(self):
         return self
@@ -75,8 +97,7 @@ class AuthClient:
             if user_data := cache.get(f"user_id_{user_id}"):
                 return user_data
 
-        request = auth_pb2.UserQuery(service__name=self.service_name, sub_service__name=AuthClient._sub_service_name,
-                                     **kwargs)
+        request = auth_pb2.UserQuery(service__name=self.service_name, sub_service__name=self.sub_service_name, **kwargs)
         result = self.stub.GetUserData(request)
         dict_result = MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
         cache_key = f"user_id_{dict_result['id']}"
@@ -86,18 +107,17 @@ class AuthClient:
 
     @try_except
     def filter_user(self, serialized=False, **kwargs) -> dict[str, list[str]]:
-        request = auth_pb2.UserQuery(service__name=self.service_name, sub_service__name=AuthClient._sub_service_name,
-                                     **kwargs)
+        request = auth_pb2.UserQuery(service__name=self.service_name, sub_service__name=self.sub_service_name, **kwargs)
         if serialized:
             result = self.stub.FilterUserSerialized(request)
         else:
             result = self.stub.FilterUser(request)
-        return MessageToDict(result, preserving_proto_field_name=True,  always_print_fields_with_no_presence=True)
+        return MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
 
     @try_except
     def verify_login(self, token: str) -> dict:
         request = auth_pb2.VerifyLoginRequest(service_name=self.service_name,
-                                              sub_service_name=AuthClient._sub_service_name, token=token)
+                                              sub_service_name=self.sub_service_name, token=token)
         result = self.stub.VerifyLogin(request)
         return MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
 
@@ -116,8 +136,8 @@ class AuthClient:
                     is_active: bool,
                     roles_name: list[str], department_names: list[str]):
         request = auth_pb2.CreateUserRequest(
-            service_name=self._service_name,
-            sub_service_name=self._sub_service_name,
+            service_name=self.service_name,
+            sub_service_name=self.sub_service_name,
             national_id=national_id,
             first_name=first_name,
             last_name=last_name,
@@ -132,11 +152,11 @@ class AuthClient:
         return MessageToDict(result, preserving_proto_field_name=True, always_print_fields_with_no_presence=True)
 
     @try_except
-    def update_user(self,id:int=None, national_id:str=None, first_name: str = None, last_name: str = None, username: str = None,
-                    phone: str = None, email: str = None, is_active: bool = None):
+    def update_user(self, id: int = None, national_id: str = None, first_name: str = None, last_name: str = None,
+                    username: str = None, phone: str = None, email: str = None, is_active: bool = None):
         request = auth_pb2.UpdateUserRequest(
-            service_name=self._service_name,
-            sub_service_name=self._sub_service_name,
+            service_name=self.service_name,
+            sub_service_name=self.sub_service_name,
             id=id,
             national_id=national_id,
             first_name=first_name,
