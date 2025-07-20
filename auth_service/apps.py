@@ -16,12 +16,18 @@ class AuthServiceConfig(AppConfig):
         if not getattr(settings, 'USER_DB_MODEL', False):
             return
 
-        AUTH_USER_MODEL: str = getattr(settings, 'AUTH_USER_MODEL', None)
+        required_variables = {
+            "AUTH_USER_MODEL": getattr(settings, 'AUTH_USER_MODEL', None),
+            "AUTH_TRUSTED_IP": getattr(settings, 'AUTH_TRUSTED_IP', None),
+            "AUTH_TRUSTED_ORIGIN": getattr(settings, 'AUTH_TRUSTED_ORIGIN', None),
+            "AUTH_SHARED_SECRET": getattr(settings, 'AUTH_SHARED_SECRET', None)
+        }
 
-        if not AUTH_USER_MODEL:
-            raise ImproperlyConfigured('You must define a custom AUTH_USER_MODEL')
+        for var in required_variables:
+            if not required_variables[var]:
+                raise ImproperlyConfigured(f'You must define {var} in your settings')
 
-        User = get_user_model_from_string(AUTH_USER_MODEL)
+        User = get_user_model_from_string(required_variables['AUTH_USER_MODEL'])
 
         from auth_service.models import BaseAuthUser
 

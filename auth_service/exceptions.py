@@ -6,8 +6,13 @@ class GRPC_Exception(Exception):
         match status_detail:
             case "NOT_FOUND":
                 self.status_code = 404
-            case "UNAUTHENTICATED" | "PERMISSION_DENIED":
+
+            case "UNAUTHENTICATED":
+                self.status_code = 401
+
+            case "PERMISSION_DENIED":
                 self.status_code = 403
+
             case "OUT_OF_RANGE" | "INVALID_ARGUMENT":
                 self.status_code = 400
             case _:
