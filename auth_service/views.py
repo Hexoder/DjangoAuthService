@@ -12,9 +12,9 @@ class SystemPermission(BasePermission):
     Allows access only to a specific internal IP, origin header, and password.
     """
 
-    TRUSTED_IP = settings['AUTH_TRUSTED_IP']
-    TRUSTED_ORIGIN = settings['AUTH_TRUSTED_ORIGIN']
-    SHARED_SECRET = settings['AUTH_SHARED_SECRET']
+    TRUSTED_IP = settings.AUTH_TRUSTED_IP
+    TRUSTED_ORIGIN = settings.AUTH_TRUSTED_ORIGIN
+    SHARED_SECRET = settings.AUTH_SHARED_SECRET
 
     def has_permission(self, request, view):
         # Extract real client IP (supporting X-Forwarded-For if behind proxy)
