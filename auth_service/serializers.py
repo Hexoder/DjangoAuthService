@@ -48,6 +48,7 @@ class UserSerializer(BaseSerializer):
 
         return fields
 
+# DEPRECATED
 class SignalSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)
 
