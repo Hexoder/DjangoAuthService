@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import connection
 
 
+
 class Command(BaseCommand):
     help = 'Sync users from gRPC server'
 
@@ -38,8 +39,8 @@ class Command(BaseCommand):
             reversed_diff = existing_user_ids.difference(new_user_ids)
             for user_id in diff:
                 User.objects.create(id=user_id)
-
-            User.objects.filter(id__in=reversed_diff).delete()
+            with connection.constraint_checks_disabled():
+                User.objects.filter(id__in=reversed_diff).delete()
 
             self.stdout.write(self.style.SUCCESS(f"{len(diff)} new users synced."))
             self.stdout.write(self.style.SUCCESS(f"{len(reversed_diff)} old users deleted."))
