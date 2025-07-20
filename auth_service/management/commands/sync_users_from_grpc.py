@@ -38,8 +38,9 @@ class Command(BaseCommand):
             reversed_diff = existing_user_ids.difference(new_user_ids)
             for user_id in diff:
                 User.objects.create(id=user_id)
-            for user_id in reversed_diff:
-                User.objects.remove(id=user_id)
+
+            User.objects.filter(id__in=reversed_diff).delete()
+
             self.stdout.write(self.style.SUCCESS(f"{len(diff)} new users synced."))
             self.stdout.write(self.style.SUCCESS(f"{len(reversed_diff)} old users deleted."))
 
