@@ -35,8 +35,13 @@ class Command(BaseCommand):
             new_user_ids = set(map(int, user_ids))
             existing_user_ids = set(User.objects.values_list('id', flat=True))
             diff = new_user_ids.difference(existing_user_ids)
+            reversed_diff = existing_user_ids.difference(new_user_ids)
             for user_id in diff:
                 User.objects.create(id=user_id)
+            for user_id in reversed_diff:
+                User.objects.remove(id=user_id)
             self.stdout.write(self.style.SUCCESS(f"{len(diff)} new users synced."))
+            self.stdout.write(self.style.SUCCESS(f"{len(reversed_diff)} old users deleted."))
+
         except Exception as err:
             self.stderr.write("Error fetching users: " + str(err))
